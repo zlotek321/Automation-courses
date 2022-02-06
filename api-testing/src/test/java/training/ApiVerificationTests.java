@@ -4,7 +4,8 @@ import models.Products;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 public class ApiVerificationTests {
 
@@ -90,13 +91,56 @@ public class ApiVerificationTests {
     }
 
     @Test
-    public void getAllProducts(){
+    public void getProductsBody(){
         String endpoint = "http://127.0.0.1:8888/api_testing/product/read.php";
         given().
                 when().
                     get(endpoint).
                 then().
                     log().
-                    body();
+                        body().
+                    assertThat().
+                        statusCode(200).
+                        body("records.size()", greaterThan(0)).
+                        body("records.id", everyItem(notNullValue())).
+                        body("records.name", everyItem(notNullValue())).
+                        body("records.description", everyItem(notNullValue())).
+                        body("records.price", everyItem(notNullValue())).
+                        body("records.category_id", everyItem(notNullValue())).
+                        body("records.category_name", everyItem(notNullValue())).
+                        body("records.id[0]", equalTo("20"));
+    }
+    @Test
+    public void getProductHeaders(){
+        String endpoint = "http://127.0.0.1:8888/api_testing/product/read.php";
+        given().
+                when().
+                    get(endpoint).
+                then().
+                    log().
+                        headers().
+                assertThat().
+                    statusCode(200).
+                    header("Content-Type", equalTo("application/json; charset=UTF-8"));
+    }
+
+    @Test
+    public void getDeserializedProduct(){
+        String endpoint = "http://127.0.0.1:8888/api_testing/product/read_one.php";
+        Products expectedProduct = new Products(
+                2,
+                "Cross-Back Training Tank",
+                "The most awesome phone of 2013!",
+                299.00,
+                2,
+                "Active Wear - Women"
+        );
+        Products actualProduct =
+                given().
+                    queryParam("id", "2").
+                when().
+                    get(endpoint).
+                        as(Products.class);
+        assertThat(actualProduct, samePropertyValuesAs(expectedProduct));
     }
 }

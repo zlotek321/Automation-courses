@@ -8,7 +8,7 @@ import static io.restassured.RestAssured.given;
 public class Challenge1Tests {
 
     @Test
-    public void createProduct(){
+    public void createSweatband(){
         String endpoint = "http://127.0.0.1:8888/api_testing/product/create.php";
         Products product = new Products(
           "Sweatband",
@@ -21,7 +21,7 @@ public class Challenge1Tests {
     }
 
     @Test
-    public void updateProduct(){
+    public void updateSweatbandPrice(){
         String endpoint = "http://127.0.0.1:8888/api_testing/product/update.php";
         String productUpdate = """
                 {
@@ -34,14 +34,14 @@ public class Challenge1Tests {
     }
 
     @Test
-    public void getProduct(){
+    public void getSweatband(){
         String endpoint = "http://127.0.0.1:8888/api_testing/product/read_one.php";
         var response = given().queryParam("id", 22).when().get(endpoint).then();
         response.log().body();
     }
 
     @Test
-    public void deleteProduct(){
+    public void deleteSweatband(){
         String endpoint = "http://127.0.0.1:8888/api_testing/product/delete.php";
         Products product = new Products(22);
 
