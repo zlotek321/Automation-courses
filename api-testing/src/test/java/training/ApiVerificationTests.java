@@ -88,4 +88,15 @@ public class ApiVerificationTests {
         var response = given().body(product).when().post(endpoint).then();
         response.log().body();
     }
+
+    @Test
+    public void getAllProducts(){
+        String endpoint = "http://127.0.0.1:8888/api_testing/product/read.php";
+        given().
+                when().
+                    get(endpoint).
+                then().
+                    log().
+                    body();
+    }
 }
