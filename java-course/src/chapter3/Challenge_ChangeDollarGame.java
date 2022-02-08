@@ -52,7 +52,7 @@ public class Challenge_ChangeDollarGame {
             double over = sum - dollar;
             System.out.println("You were $" + round(over, 2) + " over 1 dollar. Try again.");
 
-            // Alternative solution for rounding the value:
+            // Alternative solution for formatting the decimal the value:
             // System.out.println("You were $" + String.format("%.2f", over) + " over 1 dollar. Try again.");
         }
 
